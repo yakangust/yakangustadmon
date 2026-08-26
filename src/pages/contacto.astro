@@ -1,0 +1,69 @@
+---
+// Importar estilos o componentes globales si los usas
+import Layout from '../../layouts/Layout.astro'; // Ajusta la ruta a tu layout según aplique
+
+let mensajeRespuesta = '';
+
+if (Astro.request.method === 'POST') {
+  try {
+    const data = await Astro.request.formData();
+    const nombre = data.get('nombre');
+    const email = data.get('email');
+    const mensaje = data.get('mensaje');
+
+    // Envío a la API de Resend usando la variable de entorno
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: 'onboarding@resend.dev', // O tu dominio verificado
+        to: 'tu-correo@dominio.com',
+        subject: `Nuevo mensaje de contacto de ${nombre}`,
+        html: `<p><strong>Nombre:</strong> ${nombre}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Mensaje:</strong> ${mensaje}</p>`,
+      }),
+    });
+
+    if (res.ok) {
+      mensajeRespuesta = '¡Mensaje enviado con éxito!';
+    } else {
+      mensajeRespuesta = 'Error al enviar el mensaje. Inténtalo de nuevo.';
+    }
+  } catch (e) {
+    mensajeRespuesta = 'Error en el servidor.';
+  }
+}
+---
+
+<Layout title="Contacto - Asesoría Gratuita">
+  <main class="container mx-auto p-4 max-w-lg">
+    <h1 class="text-2xl font-bold mb-4">Contacto / Asesoría Gratuita</h1>
+
+    {mensajeRespuesta && <p class="mb-4 text-green-500 font-semibold">{mensajeRespuesta}</p>}
+
+    <form method="POST" class="flex flex-col gap-4">
+      <div>
+        <label class="block mb-1">Nombre:</label>
+        <input type="text" name="nombre" required class="w-full border p-2 rounded text-black" />
+      </div>
+
+      <div>
+        <label class="block mb-1">Correo electrónico:</label>
+        <input type="email" name="email" required class="w-full border p-2 rounded text-black" />
+      </div>
+
+      <div>
+        <label class="block mb-1">Mensaje o consulta:</label>
+        <textarea name="mensaje" rows="4" required class="w-full border p-2 rounded text-black"></textarea>
+      </div>
+
+      <button type="submit" class="bg-emerald-500 text-white font-bold py-2 px-4 rounded hover:bg-emerald-600">
+        Enviar Mensaje
+      </button>
+    </form>
+  </main>
+</Layout>
