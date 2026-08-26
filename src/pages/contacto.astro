@@ -15,24 +15,21 @@ const commonStyles = `
   header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
   .header-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
   h1 { color: var(--accent); margin: 0; font-size: 1.75rem; }
-  .logo-img { width: 80px; height: 80px; object-fit: contain; border-radius: 8px; }
+  .logo-img { width: 80px; height: 80px; object-fit: contain; border-radius: 8px; display: block; }
   .nav-menu { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
   .nav-btn { background-color: var(--border); color: var(--text); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid #475569; transition: all 0.2s ease-in-out; cursor: pointer; }
   .nav-btn:hover { background-color: var(--hover-green); color: var(--bg); border-color: var(--hover-green); }
-  .grid { display: grid; gap: 1.5rem; }
-  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-  .tag { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
-  .card h2 { margin: 0.5rem 0; font-size: 1.25rem; text-transform: capitalize; }
-  .card p { color: var(--muted); line-height: 1.5; margin: 0; }
+  
+  /* Estilos para el formulario */
+  .form-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+  .form-group { margin-bottom: 1.25rem; }
+  label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text); }
+  input, textarea { width: 100%; box-sizing: border-box; background-color: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-size: 1rem; font-family: inherit; }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 120px; }
+  .submit-btn { width: 100%; background-color: var(--accent); color: var(--bg); border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background-color 0.2s; }
+  .submit-btn:hover { background-color: var(--hover-green); color: #ffffff; }
 `;
-
-const posts = [
-  { id: 1, title: "Formato de Demanda Inicial", body: "Plantilla editable para redactar una demanda inicial." },
-  { id: 2, title: "Escrito de Promoción General", body: "Modelo para presentar promociones de mero trámite." },
-  { id: 3, title: "Compendio de Leyes y Códigos", body: "Acceso directo a la normatividad vigente." },
-  { id: 4, title: "Videotutoriales de Procedimiento", body: "Guías en video sobre trámites en plataformas oficiales." },
-  { id: 5, title: "Repositorio de Archivos y Anexos", body: "Documentos de apoyo y archivos multimedia." },
-];
 ---
 
 <!DOCTYPE html>
@@ -40,32 +37,52 @@ const posts = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asesoría administrativa para tu negocio</title>
+  <title>Asesoría Gratuita - Contacto</title>
   <style is:global set:html={commonStyles}></style>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="header-top">
-        <h1>Asesoría administrativa para tu negocio</h1>
-        <img src="/logo.png" alt="Logotipo Yakangust" class="logo-img">
+        <h1>Asesoría Gratuita</h1>
+        <img src="/logo.png" alt="Logotipo Yakangust" class="logo-img" />
       </div>
       <nav class="nav-menu">
         <a href="/" class="nav-btn">Inicio</a>
-        <a href="#formatos" class="nav-btn">Archivos</a>
-        <a href="#escritos" class="nav-btn">Escritos</a>
-        <a href="#leyes" class="nav-btn">Leyes</a>
+        <a href="/#formatos" class="nav-btn">Archivos</a>
+        <a href="/#escritos" class="nav-btn">Escritos</a>
+        <a href="/#leyes" class="nav-btn">Leyes</a>
         <a href="/contacto" class="nav-btn">Asesoría Gratuita</a>
       </nav>
     </header>
-    <main class="grid">
-      {posts.map(post => (
-        <article class="card">
-          <span class="tag">Sección #{post.id}</span>
-          <h2>{post.title}</h2>
-          <p>{post.body}</p>
-        </article>
-      ))}
+
+    <main class="form-card">
+      <h2 style="margin-top:0; color: var(--accent);">Solicita tu Asesoría Administrativa</h2>
+      <p style="color: var(--muted); margin-bottom: 1.5rem;">Déjanos tus datos y un especialista revisará tu consulta a la brevedad.</p>
+      
+      <form action="/api/contacto" method="POST">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Teléfono / WhatsApp</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" />
+        </div>
+
+        <div class="form-group">
+          <label for="mensaje">Detalles de tu consulta</label>
+          <textarea id="mensaje" name="mensaje" placeholder="Describe brevemente el asunto administrativo o legal que necesitas revisar..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Enviar Consulta</button>
+      </form>
     </main>
   </div>
 </body>
