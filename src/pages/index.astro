@@ -25,6 +25,16 @@ const commonStyles = `
   .card h2 { margin: 0.5rem 0 1rem 0; font-size: 1.25rem; text-transform: capitalize; }
   .card p { color: var(--muted); line-height: 1.5; margin: 0; }
   .card-video { width: 100%; max-height: 420px; border-radius: 8px; background-color: #000; margin-top: 0.5rem; outline: none; border: 1px solid var(--border); }
+  
+  /* Estilos para los íconos de redes sociales */
+  .social-container { display: flex; gap: 1.25rem; align-items: center; margin-top: 1rem; }
+  .social-link { display: inline-block; border-radius: 50%; padding: 4px; transition: all 0.25s ease-in-out; border: 2px solid transparent; }
+  .social-icon { width: 48px; height: 48px; object-fit: contain; display: block; border-radius: 50%; }
+  .social-link:hover {
+    border-color: var(--hover-green);
+    box-shadow: 0 0 12px var(--hover-green);
+    transform: translateY(-2px);
+  }
 `;
 
 const posts = [
@@ -54,9 +64,13 @@ const posts = [
   },
   { 
     id: 5, 
-    tag: "Sección #5",
-    title: "Repositorio de Archivos y Anexos", 
-    body: "Documentos de apoyo y archivos multimedia." 
+    tag: "Redes Sociales",
+    title: "Ponte en contacto con nosotros", 
+    socials: [
+      { name: "Facebook", icon: "/facebook.png", url: "https://facebook.com" },
+      { name: "Instagram", icon: "/instagram.png", url: "https://instagram.com" },
+      { name: "TikTok", icon: "/tiktok.svg", url: "https://tiktok.com" }
+    ]
   },
 ];
 ---
@@ -89,14 +103,22 @@ const posts = [
         <article class="card">
           <span class="tag">{post.tag}</span>
           <h2>{post.title}</h2>
-          {post.video ? (
+          {post.video && (
             <video class="card-video" controls preload="metadata">
               <source src={post.video} type="video/mp4" />
               Tu navegador no soporta la reproducción de video HTML5.
             </video>
-          ) : (
-            <p>{post.body}</p>
           )}
+          {post.socials && (
+            <div class="social-container">
+              {post.socials.map(social => (
+                <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link" title={social.name}>
+                  <img src={social.icon} alt={social.name} class="social-icon" />
+                </a>
+              ))}
+            </div>
+          )}
+          {post.body && <p>{post.body}</p>}
         </article>
       ))}
     </main>
