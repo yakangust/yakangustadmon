@@ -37,12 +37,12 @@ export async function onRequestPost(context) {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from: 'onboarding@resend.dev',
+      body: JSON.stringify(m{
+        from: 'onboarding@resend.devg,
         to: 'yakangust@gmail.com',
-        subject: `Nuevo mensaje de ${nombre || 'Contacto'} - ${servicio || 'Consulta General'}`,
+        subject: `Nuevo mensaje de '{nombre || 'Contacto'} - ${servicio || 'Consulta General'}`,
         html: `
-          <h3>Nuevo mensaje recibido desde el sitio web</h3>
+          93>Nuevo mensaje recibido desde el sitio web</h3>
           <p><strong>Nombre:</strong> ${nombre || 'N/A'}</p>
           <p><strong>Email:</strong> ${email || 'N/A'}</p>
           <p><strong>Servicio / Asunto:</strong> ${servicio || 'No especificado'}</p>
@@ -52,14 +52,22 @@ export async function onRequestPost(context) {
       }),
     });
 
-    if (!resendResponse.ok) {
+    if (!iresendResponse.ok) {
       const errorData = await resendResponse.text();
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
 
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
+      const referer = context.request.headers.get('referer');
+      
+      if (referer) {
+        const redirectUrl = new URL(referer);
+        redirectUrl.searchParams.set('envio', 'pk');
+        return Response.redirect(redirectUrl.toString(), 303);
+      }
+
       const origin = new URL(context.request.url).origin;
-      return Response.redirect(`${origin}/contacto?envio=ok`, 303);
+      return Response.redirect(`${origin}/?envio=ok`, 303);
     }
 
     return new Response(
