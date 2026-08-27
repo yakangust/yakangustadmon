@@ -57,9 +57,10 @@ export async function onRequestPost(context) {
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
 
-    // Redirección corregida al origen raíz con parámetro de confirmación
+    // Redirección explícita a /contacto/?envio=ok
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
-      return Response.redirect(`${new URL(context.request.url).origin}/?envio=ok`, 303);
+      const origin = new URL(context.request.url).origin;
+      return Response.redirect(`${origin}/contacto/?envio=ok`, 303);
     }
 
     return new Response(
