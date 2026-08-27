@@ -9,10 +9,19 @@ export async function POST({ request, env }) {
     const asunto = formData.get('asunto');
     const mensaje = formData.get('mensaje');
 
+    const apiKey = env?.RESEND_API_KEY || process.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'Falta RESEND_API_KEY' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -37,7 +46,11 @@ export async function POST({ request, env }) {
         headers: { Location: '/contacto?exito=true' },
       });
     } else {
-      throw new Error('Error al enviar el correo con Resend');
+      const errData = await res.text();
+      return new Response(JSON.stringify({ error: errData }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
