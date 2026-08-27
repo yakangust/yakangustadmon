@@ -37,12 +37,12 @@ export async function onRequestPost(context) {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(m{
-        from: 'onboarding@resend.devg,
+      body: JSON.stringify({
+        from: 'onboarding@resend.dev',
         to: 'yakangust@gmail.com',
-        subject: `Nuevo mensaje de '{nombre || 'Contacto'} - ${servicio || 'Consulta General'}`,
+        subject: `Nuevo mensaje de ${nombre || 'Contacto'} - ${servicio || 'Consulta General'}`,
         html: `
-          93>Nuevo mensaje recibido desde el sitio web</h3>
+          <h3>Nuevo mensaje recibido desde el sitio web</h3>
           <p><strong>Nombre:</strong> ${nombre || 'N/A'}</p>
           <p><strong>Email:</strong> ${email || 'N/A'}</p>
           <p><strong>Servicio / Asunto:</strong> ${servicio || 'No especificado'}</p>
@@ -52,7 +52,7 @@ export async function onRequestPost(context) {
       }),
     });
 
-    if (!iresendResponse.ok) {
+    if (!resendResponse.ok) {
       const errorData = await resendResponse.text();
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
@@ -62,7 +62,7 @@ export async function onRequestPost(context) {
       
       if (referer) {
         const redirectUrl = new URL(referer);
-        redirectUrl.searchParams.set('envio', 'pk');
+        redirectUrl.searchParams.set('envio', 'ok');
         return Response.redirect(redirectUrl.toString(), 303);
       }
 
