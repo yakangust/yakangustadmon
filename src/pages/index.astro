@@ -1,5 +1,7 @@
 ---
 const commonStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
   :root {
     --bg: #0f172a;
     --card-bg: #1e293b;
@@ -14,7 +16,17 @@ const commonStyles = `
   .container { max-width: 800px; margin: 0 auto; }
   header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
   .header-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-  h1 { color: var(--accent); margin: 0; font-size: 1.75rem; }
+  
+  /* Estilo Gótico para Yakangustc S.A.S */
+  .gothic-title {
+    font-family: 'UnifrakturMaguntia', 'Old English Text MT', 'Cloister Black', 'UnifrakturCook', serif;
+    color: var(--accent);
+    margin: 0;
+    font-size: 2.25rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
   .logo-img { width: 240px; height: auto; object-fit: contain; border-radius: 8px; display: block; }
   .nav-menu { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
   .nav-btn { background-color: var(--border); color: var(--text); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid #475569; transition: all 0.2s ease-in-out; cursor: pointer; }
@@ -97,14 +109,14 @@ const posts = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asesoría administrativa para tu negocio</title>
+  <title>Yakangustc S.A.S</title>
   <style is:global set:html={commonStyles}></style>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="header-top">
-        <h1>Asesoría administrativa para tu negocio</h1>
+        <h1 class="gothic-title">Yakangustc S.A.S</h1>
         <img src="/logo.png" alt="Logotipo Yakangust" class="logo-img" />
       </div>
       <nav class="nav-menu">
