@@ -60,15 +60,14 @@ const commonStyles = `
     transition: background-color 0.2s;
   }
   button:hover { background-color: var(--hover-green); color: #fff; }
-  #status-message {
-    margin-top: 1rem;
+  .status-success {
+    background-color: #166534;
+    color: #4ade80;
     padding: 0.75rem;
     border-radius: 0.5rem;
-    display: none;
+    margin-bottom: 1.5rem;
     text-align: center;
   }
-  .status-success { background-color: #166534; color: #4ade80; }
-  .status-error { background-color: #991b1b; color: #fca5a5; }
 `;
 ---
 
@@ -94,7 +93,7 @@ const commonStyles = `
           Envíanos un mensaje y nos pondremos en contacto contigo a la brevedad.
         </p>
 
-        <form id="contactForm">
+        <form action="/api/contacto" method="POST">
           <div class="form-group">
             <label for="nombre">Nombre Completo</label>
             <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre..." />
@@ -110,67 +109,9 @@ const commonStyles = `
             <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
           </div>
 
-          <button type="submit" id="submitBtn">Enviar Mensaje</button>
+          <button type="submit">Enviar Mensaje</button>
         </form>
-
-        <div id="status-message"></div>
       </main>
     </div>
-
-    <script>
-      const form = document.getElementById('contactForm') as HTMLFormElement;
-      const statusDiv = document.getElementById('status-message');
-      const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-
-      if (form) {
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          if (submitBtn) submitBtn.disabled = true;
-          if (statusDiv) {
-            statusDiv.style.display = 'none';
-            statusDiv.className = '';
-          }
-
-          const formData = new FormData(form);
-          const payload = {
-            nombre: formData.get('nombre'),
-            email: formData.get('email'),
-            mensaje: formData.get('mensaje')
-          };
-
-          try {
-            const response = await fetch('/api/contacto', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(payload)
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-              if (statusDiv) {
-                statusDiv.textContent = '¡Mensaje enviado con éxito!';
-                statusDiv.className = 'status-success';
-                statusDiv.style.display = 'block';
-              }
-              form.reset();
-            } else {
-              throw new Error(result.error || 'Error desconocido');
-            }
-          } catch (err: any) {
-            if (statusDiv) {
-              statusDiv.textContent = `Error: ${err.message || 'No se pudo enviar el mensaje'}`;
-              statusDiv.className = 'status-error';
-              statusDiv.style.display = 'block';
-            }
-          } finally {
-            if (submitBtn) submitBtn.disabled = false;
-          }
-        });
-      }
-    </script>
   </body>
 </html>
