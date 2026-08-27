@@ -1,4 +1,7 @@
 ---
+const url = new URL(Astro.request.url);
+const status = url.searchParams.get('envio');
+
 const commonStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
@@ -33,7 +36,7 @@ const commonStyles = `
   }
   .form-group { margin-bottom: 1.5rem; }
   label { display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; }
-  input, textarea {
+  input, select, textarea {
     width: 100%;
     padding: 0.75rem;
     background-color: var(--input-bg);
@@ -43,7 +46,7 @@ const commonStyles = `
     font-size: 1rem;
     box-sizing: border-box;
   }
-  input:focus, textarea:focus {
+  input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--accent);
   }
@@ -60,12 +63,13 @@ const commonStyles = `
     transition: background-color 0.2s;
   }
   button:hover { background-color: var(--hover-green); color: #fff; }
-  .status-success {
+  .alert-success {
     background-color: #166534;
     color: #4ade80;
-    padding: 0.75rem;
+    padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
+    border: 1px solid #22c55e;
     text-align: center;
   }
 `;
@@ -75,7 +79,7 @@ const commonStyles = `
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contacto - Yakangust</title>
+    <title>Contacto - Yakangust C S.A.S</title>
     <style set:html={commonStyles}></style>
   </head>
   <body>
@@ -93,6 +97,12 @@ const commonStyles = `
           Envíanos un mensaje y nos pondremos en contacto contigo a la brevedad.
         </p>
 
+        {status === 'ok' && (
+          <div class="alert-success">
+            ¡Tu mensaje ha sido enviado exitosamente! Nos pondremos en contacto pronto.
+          </div>
+        )}
+
         <form action="/api/contacto" method="POST">
           <div class="form-group">
             <label for="nombre">Nombre Completo</label>
@@ -102,6 +112,17 @@ const commonStyles = `
           <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <input type="email" id="email" name="email" required placeholder="tu@email.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="servicio">Servicio de interés</label>
+            <select id="servicio" name="servicio" required>
+              <option value="" disabled selected>Selecciona una opción...</option>
+              <option value="Asesoría Fiscal">Asesoría Fiscal</option>
+              <option value="Auditoría">Auditoría</option>
+              <option value="Contabilidad General">Contabilidad General</option>
+              <option value="Otro">Otro</option>
+            </select>
           </div>
 
           <div class="form-group">
