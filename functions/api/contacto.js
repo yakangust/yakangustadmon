@@ -57,7 +57,6 @@ export async function onRequestPost(context) {
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
 
-    // Redirección directa a la ruta limpia de Astro sin barra al final
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
       const origin = new URL(context.request.url).origin;
       return Response.redirect(`${origin}/contacto?envio=ok`, 303);
