@@ -1,7 +1,4 @@
 ---
-const url = new URL(Astro.request.url);
-const status = url.searchParams.get('envio');
-
 const commonStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
@@ -15,124 +12,169 @@ const commonStyles = `
     --border: #334155;
     --hover-green: #22c55e;
   }
-  body { 
-    font-family: system-ui, -apple-system, sans-serif; 
-    background-color: var(--bg); 
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
     color: var(--text);
     margin: 0;
-    padding: 2rem 1rem;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
-  .container { max-width: 800px; margin: 0 auto; }
-  header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
-  .header-top { display: flex; justify-content: space-between; align-items: center; }
-  .brand { font-family: 'Lobster', cursive; font-size: 2rem; color: var(--accent); margin: 0; }
-  
-  .card {
+  .container {
     background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    padding: 2rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   }
-  .form-group { margin-bottom: 1.5rem; }
-  label { display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; }
+  h1 {
+    font-family: 'Lobster', cursive;
+    color: var(--accent);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
   input, select, textarea {
     width: 100%;
-    padding: 0.75rem;
+    padding: 10px;
     background-color: var(--input-bg);
     border: 1px solid var(--border);
-    border-radius: 0.5rem;
+    border-radius: 6px;
     color: var(--text);
-    font-size: 1rem;
     box-sizing: border-box;
   }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
   button {
-    background-color: var(--accent);
-    color: #000;
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
     width: 100%;
-    font-size: 1rem;
+    padding: 12px;
+    background-color: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.2s;
   }
-  button:hover { background-color: var(--hover-green); color: #fff; }
-  .alert-success {
-    background-color: #166534;
-    color: #4ade80;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #22c55e;
+  button:hover {
+    background-color: var(--hover-green);
+    color: white;
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .mensaje-estado {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
     text-align: center;
   }
 `;
 ---
 
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contacto - Yakangust C S.A.S</title>
-    <style set:html={commonStyles}></style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="header-top">
-          <h1 class="brand">Yakangust C S.A.S</h1>
-          <a href="/" style="color: var(--accent); text-decoration: none;">&larr; Volver</a>
-        </div>
-      </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Yakangustc S.A.S</title>
+  <style set:html={commonStyles}></style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contacto</h1>
 
-      <main class="card">
-        <h2>Contacto</h2>
-        <p style="color: var(--muted); margin-bottom: 2rem;">
-          Envíanos un mensaje y nos pondremos en contacto contigo a la brevedad.
-        </p>
+    <form id="form-contacto">
+      <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
+      </div>
 
-        {status === 'ok' && (
-          <div class="alert-success">
-            ¡Tu mensaje ha sido enviado exitosamente! Nos pondremos en contacto pronto.
-          </div>
-        )}
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" required placeholder="tu@correo.com" />
+      </div>
 
-        <form action="/api/contacto" method="POST">
-          <div class="form-group">
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre..." />
-          </div>
+      <div class="form-group">
+        <label for="servicio">Servicio / Asunto</label>
+        <input type="text" id="servicio" name="servicio" placeholder="Asunto o servicio de interés" />
+      </div>
 
-          <div class="form-group">
-            <label for="email">Correo Electrónico</label>
-            <input type="email" id="email" name="email" required placeholder="tu@email.com" />
-          </div>
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="4" required placeholder="Escribe tu mensaje aquí..."></textarea>
+      </div>
 
-          <div class="form-group">
-            <label for="servicio">Servicio de interés</label>
-            <select id="servicio" name="servicio" required>
-              <option value="" disabled selected>Selecciona una opción...</option>
-              <option value="Asesoría Fiscal">Asesoría Fiscal</option>
-              <option value="Auditoría">Auditoría</option>
-              <option value="Contabilidad General">Contabilidad General</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
+      <button type="submit" id="btn-enviar">Enviar mensaje</button>
 
-          <div class="form-group">
-            <label for="mensaje">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
-          </div>
+      <!-- Alerta dinámica -->
+      <div id="mensaje-estado" class="mensaje-estado"></div>
+    </form>
+  </div>
 
-          <button type="submit">Enviar Mensaje</button>
-        </form>
-      </main>
-    </div>
-  </body>
+  <script>
+    const form = document.getElementById('form-contacto') as HTMLFormElement;
+    const estado = document.getElementById('mensaje-estado');
+    const btn = document.getElementById('btn-enviar') as HTMLButtonElement;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (btn) btn.disabled = true;
+      if (estado) {
+        estado.style.display = 'block';
+        estado.style.backgroundColor = '#0284c7';
+        estado.style.color = '#ffffff';
+        estado.innerHTML = '⏳ Enviando mensaje...';
+      }
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/api/contacto', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          if (estado) {
+            estado.style.backgroundColor = '#16a34a';
+            estado.style.color = '#ffffff';
+            estado.innerHTML = '✅ ¡Mensaje enviado con éxito!';
+          }
+          form.reset();
+
+          // Espera 2.5 segundos mostrando la palomita y redirige a la raíz
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2500);
+
+        } else {
+          throw new Error('Error en la respuesta del servidor');
+        }
+      } catch (err) {
+        if (estado) {
+          estado.style.backgroundColor = '#dc2626';
+          estado.style.color = '#ffffff';
+          estado.innerHTML = '❌ Hubo un error al enviar el mensaje. Inténtalo de nuevo.';
+        }
+        if (btn) btn.disabled = false;
+      }
+    });
+  </script>
+</body>
 </html>
