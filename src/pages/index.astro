@@ -22,16 +22,42 @@ const commonStyles = `
   .grid { display: grid; gap: 1.5rem; }
   .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
   .tag { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
-  .card h2 { margin: 0.5rem 0; font-size: 1.25rem; text-transform: capitalize; }
+  .card h2 { margin: 0.5rem 0 1rem 0; font-size: 1.25rem; text-transform: capitalize; }
   .card p { color: var(--muted); line-height: 1.5; margin: 0; }
+  .card-video { width: 100%; max-height: 420px; border-radius: 8px; background-color: #000; margin-top: 0.5rem; outline: none; border: 1px solid var(--border); }
 `;
 
 const posts = [
-  { id: 1, title: "Formato de Demanda Inicial", body: "Plantilla editable para redactar una demanda inicial." },
-  { id: 2, title: "Escrito de Promoción General", body: "Modelo para presentar promociones de mero trámite." },
-  { id: 3, title: "Compendio de Leyes y Códigos", body: "Acceso directo a la normatividad vigente." },
-  { id: 4, title: "Videotutoriales de Procedimiento", body: "Guías en video sobre trámites en plataformas oficiales." },
-  { id: 5, title: "Repositorio de Archivos y Anexos", body: "Documentos de apoyo y archivos multimedia." },
+  { 
+    id: 1, 
+    tag: "Plan de negocios",
+    title: "Asesoria gratuita para la creacion de tu plan de negocios", 
+    video: "/plan.mp4" 
+  },
+  { 
+    id: 2, 
+    tag: "Sección #2",
+    title: "Escrito de Promoción General", 
+    body: "Modelo para presentar promociones de mero trámite." 
+  },
+  { 
+    id: 3, 
+    tag: "Sección #3",
+    title: "Compendio de Leyes y Códigos", 
+    body: "Acceso directo a la normatividad vigente." 
+  },
+  { 
+    id: 4, 
+    tag: "Sección #4",
+    title: "Videotutoriales de Procedimiento", 
+    body: "Guías en video sobre trámites en plataformas oficiales." 
+  },
+  { 
+    id: 5, 
+    tag: "Sección #5",
+    title: "Repositorio de Archivos y Anexos", 
+    body: "Documentos de apoyo y archivos multimedia." 
+  },
 ];
 ---
 
@@ -61,9 +87,16 @@ const posts = [
     <main class="grid">
       {posts.map(post => (
         <article class="card">
-          <span class="tag">Sección #{post.id}</span>
+          <span class="tag">{post.tag}</span>
           <h2>{post.title}</h2>
-          <p>{post.body}</p>
+          {post.video ? (
+            <video class="card-video" controls preload="metadata">
+              <source src={post.video} type="video/mp4" />
+              Tu navegador no soporta la reproducción de video HTML5.
+            </video>
+          ) : (
+            <p>{post.body}</p>
+          )}
         </article>
       ))}
     </main>
