@@ -1,14 +1,3 @@
-
-export async function onRequestPost(context) {
-  try {
-    let nombre = '';
-    let email = '';
-    let servicio = '';
-    let mensaje = '';
-
-    const contentType = context.request.headers.get('content-type') || '';
-
-    if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
 export async function onRequestPost(context) {
   try {
     let nombre = '';
@@ -68,7 +57,6 @@ export async function onRequestPost(context) {
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
 
-    // Redirección basada en la URL exacta de origen (elimina el riesgo de 404)
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
       const referer = context.request.headers.get('referer');
       
