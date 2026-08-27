@@ -57,10 +57,10 @@ export async function onRequestPost(context) {
       return new Response(`Error al enviar correo: ${errorData}`, { status: 500 });
     }
 
-    // Redirección explícita a /contacto/?envio=ok
+    // Redirección limpia a /contacto/?envio=ok
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
       const origin = new URL(context.request.url).origin;
-      return Response.redirect(`${origin}/contacto/?https://yakangustadmon.pages.dev/contacto/`, 303);
+      return Response.redirect(`${origin}/contacto/?envio=ok`, 303);
     }
 
     return new Response(
