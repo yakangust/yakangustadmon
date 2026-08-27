@@ -59,7 +59,7 @@ export async function onRequestPost(context) {
 
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
       const origin = new URL(context.request.url).origin;
-      return Response.redirect(`${origin}/?envio=ok`, 303);
+      return Response.redirect(`${origin}/`, 303);
     }
 
     return new Response(
