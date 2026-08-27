@@ -37,8 +37,9 @@ const commonStyles = `
   .form-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
   .form-group { margin-bottom: 1.25rem; }
   label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text); }
-  input, textarea { width: 100%; box-sizing: border-box; background-color: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-size: 1rem; font-family: inherit; }
-  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  input, select, textarea { width: 100%; box-sizing: border-box; background-color: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-size: 1rem; font-family: inherit; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  select option { background-color: var(--card-bg); color: var(--text); }
   textarea { resize: vertical; min-height: 120px; }
   .submit-btn { width: 100%; background-color: var(--accent); color: var(--bg); border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background-color 0.2s; }
   .submit-btn:hover { background-color: var(--hover-green); color: #ffffff; }
@@ -87,6 +88,18 @@ const commonStyles = `
         <div class="form-group">
           <label for="telefono">Teléfono / WhatsApp</label>
           <input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" />
+        </div>
+
+        <div class="form-group">
+          <label for="asunto">Tipo de Asunto</label>
+          <select id="asunto" name="asunto" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="tramites_instituciones">Trámites ante instituciones</option>
+            <option value="asesoria_fiscal">Asesoría fiscal</option>
+            <option value="licencias_permisos">Licencias y permisos</option>
+            <option value="apertura_empresa">Apertura de empresa</option>
+            <option value="plan_negocios">Plan de negocios</option>
+          </select>
         </div>
 
         <div class="form-group">
