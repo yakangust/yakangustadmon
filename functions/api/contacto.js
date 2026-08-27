@@ -1,8 +1,18 @@
 export async function onRequestPost(context) {
   try {
-    const data = await context.request.json();
+    let data;
+    const bodyText = await context.request.text();
 
-    // Obtiene la API Key directamente desde las variables de entorno de Cloudflare Pages
+    // Intenta parsear JSON o decodificar en caso de venir doblemente serializado
+    try {
+      data = JSON.parse(bodyText);
+      if (typeof data === 'string') {
+        data = JSON.parse(data);
+      }
+    } catch (e) {
+      data = {};
+    }
+
     const apiKey = context.env.RESEND_API_KEY;
 
     if (!apiKey) {
