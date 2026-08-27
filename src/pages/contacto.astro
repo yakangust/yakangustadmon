@@ -43,7 +43,22 @@ const commonStyles = `
   textarea { resize: vertical; min-height: 120px; }
   .submit-btn { width: 100%; background-color: var(--accent); color: var(--bg); border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background-color 0.2s; }
   .submit-btn:hover { background-color: var(--hover-green); color: #ffffff; }
+
+  /* Alerta de confirmación */
+  .alert-success {
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid var(--hover-green);
+    color: var(--hover-green);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
 `;
+
+// Detectar si el formulario fue enviado con éxito mediante la URL (?exito=true)
+const url = Astro.url;
+const exito = url.searchParams.get('exito') === 'true';
 ---
 
 <!DOCTYPE html>
@@ -74,6 +89,12 @@ const commonStyles = `
       <h2 style="margin-top:0; color: var(--accent);">Solicita tu Asesoría Administrativa</h2>
       <p style="color: var(--muted); margin-bottom: 1.5rem;">Déjanos tus datos y un especialista revisará tu consulta a la brevedad.</p>
       
+      {exito && (
+        <div class="alert-success">
+          ¡Tu mensaje ha sido enviado con éxito! En breve nos pondremos en contacto contigo a través de correo o WhatsApp.
+        </div>
+      )}
+
       <form action="/api/contacto" method="POST">
         <div class="form-group">
           <label for="nombre">Nombre Completo</label>
@@ -94,11 +115,11 @@ const commonStyles = `
           <label for="asunto">Tipo de Asunto</label>
           <select id="asunto" name="asunto" required>
             <option value="" disabled selected>Selecciona una opción</option>
-            <option value="tramites_instituciones">Trámites ante instituciones</option>
-            <option value="asesoria_fiscal">Asesoría fiscal</option>
-            <option value="licencias_permisos">Licencias y permisos</option>
-            <option value="apertura_empresa">Apertura de empresa</option>
-            <option value="plan_negocios">Plan de negocios</option>
+            <option value="Trámites ante instituciones">Trámites ante instituciones</option>
+            <option value="Asesoría fiscal">Asesoría fiscal</option>
+            <option value="Licencias y permisos">Licencias y permisos</option>
+            <option value="Apertura de empresa">Apertura de empresa</option>
+            <option value="Plan de negocios">Plan de negocios</option>
           </select>
         </div>
 
