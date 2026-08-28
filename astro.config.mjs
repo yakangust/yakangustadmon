@@ -4,8 +4,8 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   output: 'server',
   adapter: cloudflare(),
-  trailingSlash: 'always',
+  trailingSlash: 'never',
   build: {
-    format: 'directory'
+    format: 'file' // Genera contacto.html para responder nativamente a /contacto
   }
 });
