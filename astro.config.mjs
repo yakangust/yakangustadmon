@@ -9,6 +9,6 @@ export default defineConfig({
     }
   }),
   build: {
-    format: 'file'
+    format: 'directory' // Crea la carpeta /contacto/index.html en lugar de /contacto.html
   }
 });
