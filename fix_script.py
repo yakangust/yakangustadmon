@@ -1,4 +1,4 @@
-export async function onRequestPost(context) {
+code = """export async function onRequestPost(context) {
   try {
     let nombre = '';
     let email = '';
@@ -58,8 +58,16 @@ export async function onRequestPost(context) {
     }
 
     if (contentType.includes('form-data') || contentType.includes('application/x-www-form-urlencoded')) {
+      const referer = context.request.headers.get('referer');
+      
+      if (referer) {
+        const redirectUrl = new URL(referer);
+        redirectUrl.searchParams.set('envio', 'ok');
+        return Response.redirect(redirectUrl.toString(), 303);
+      }
+
       const origin = new URL(context.request.url).origin;
-      return Response.redirect(`${origin}/`, 303);
+      return Response.redirect(`${origin}/?envio=ok`, 303);
     }
 
     return new Response(
@@ -67,6 +75,4 @@ export async function onRequestPost(context) {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (err) {
-    return new Response(`Error interno: ${err.message}`, { status: 500 });
-  }
-}
+    return new Respo
