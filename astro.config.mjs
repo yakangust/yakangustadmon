@@ -7,5 +7,8 @@ export default defineConfig({
     platformProxy: {
       enabled: false
     }
-  })
+  }),
+  build: {
+    format: 'file'
+  }
 });
