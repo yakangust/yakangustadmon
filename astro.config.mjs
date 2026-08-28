@@ -3,8 +3,14 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare',
+    cloudflareModules: true,
+    platformProxy: {
+      enabled: false,
+    },
+  }),
   build: {
-    format: 'directory'
-  }
+    format: 'directory',
+  },
 });
